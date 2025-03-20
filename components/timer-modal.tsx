@@ -1,75 +1,62 @@
-"use client"
+"use client";
 
-import { useState, useEffect, useRef } from "react"
-import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent } from "@/components/ui/dialog"
-import { Play, Pause } from "lucide-react"
-import { formatTime } from "@/components/workout-exercise"
+import { useState, useEffect, useRef } from "react";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Play, Pause } from "lucide-react";
+import { formatTime } from "@/components/workout-exercise";
+import { useIntervalWhen } from "@/hooks/use-interval-when";
 
 interface TimerModalProps {
-  open: boolean
-  onClose: () => void
-  duration: number
+  open: boolean;
+  onClose: () => void;
+  duration: number;
 }
 
 export function TimerModal({ open, onClose, duration }: TimerModalProps) {
-  const [timeLeft, setTimeLeft] = useState(duration)
-  const [status, setStatus] = useState<"playing" | "paused" | "done">("playing")
-  const intervalRef = useRef<NodeJS.Timeout | null>(null)
-  const audioRef = useRef<HTMLAudioElement | null>(null)
+  const [timeLeft, setTimeLeft] = useState(duration + 5);
+  const [status, setStatus] = useState<"playing" | "paused" | "done">(
+    "playing"
+  );
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    if (open) {
-      setTimeLeft(duration)
-      setStatus("playing")
+    setTimeLeft(duration + 5);
+    setStatus("playing");
 
-      // Create audio element
-      audioRef.current = new Audio("/alarm.mp3")
-    }
+    // Create audio element
+    audioRef.current = new Audio("/alarm.mp3");
 
     return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current)
-      }
       if (audioRef.current) {
-        audioRef.current.pause()
-        audioRef.current = null
+        audioRef.current.pause();
+        audioRef.current = null;
       }
-    }
-  }, [open, duration])
+    };
+  }, [duration]);
 
-  useEffect(() => {
-    if (status === "playing") {
-      intervalRef.current = setInterval(() => {
-        setTimeLeft((prev) => {
-          if (prev <= 1) {
-            clearInterval(intervalRef.current!)
-            setStatus("done")
-            // Play alarm sound
-            if (audioRef.current) {
-              audioRef.current.play()
-            }
-            return 0
+  useIntervalWhen(
+    () => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          setStatus("done");
+          // Play alarm sound
+          if (audioRef.current) {
+            audioRef.current.play();
           }
-          return prev - 1
-        })
-      }, 1000)
-    } else if (status === "paused" && intervalRef.current) {
-      clearInterval(intervalRef.current)
-    }
-
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current)
-      }
-    }
-  }, [status])
+          return 0;
+        }
+        return prev - 1;
+      });
+    },
+    { ms: 1000, when: status === "playing" }
+  );
 
   const togglePlayPause = () => {
-    setStatus(status === "playing" ? "paused" : "playing")
-  }
+    setStatus(status === "playing" ? "paused" : "playing");
+  };
 
-  if (!open) return null
+  if (!open) return null;
 
   return (
     <Dialog open={open} onOpenChange={(open) => !open && onClose()}>
@@ -103,6 +90,5 @@ export function TimerModal({ open, onClose, duration }: TimerModalProps) {
         </div>
       </DialogContent>
     </Dialog>
-  )
+  );
 }
-
