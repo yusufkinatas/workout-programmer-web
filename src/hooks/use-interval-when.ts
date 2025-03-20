@@ -9,7 +9,7 @@ export function useIntervalWhen(
   callback: () => void,
   { ms, when }: UseIntervalWhenOptions
 ) {
-  const intervalRef = useRef<NodeJS.Timeout>();
+  const intervalRef = useRef<NodeJS.Timeout>(null);
 
   useEffect(() => {
     if (when) {

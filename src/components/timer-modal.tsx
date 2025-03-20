@@ -1,39 +1,37 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { useState, useEffect } from "react";
+import { Button } from "./ui/button";
+import { Dialog, DialogContent } from "./ui/dialog";
 import { Play, Pause } from "lucide-react";
-import { formatTime } from "@/components/workout-exercise";
-import { useIntervalWhen } from "@/hooks/use-interval-when";
+import { useIntervalWhen } from "../hooks/use-interval-when";
+import useSound from "use-sound";
+import { formatTime } from "./utils";
+// @ts-ignore
+import alarmSound from "./alarm.mp3";
 
 interface TimerModalProps {
-  open: boolean;
   onClose: () => void;
   duration: number;
 }
 
-export function TimerModal({ open, onClose, duration }: TimerModalProps) {
+export function TimerModal({ onClose, duration }: TimerModalProps) {
   const [timeLeft, setTimeLeft] = useState(duration + 5);
   const [status, setStatus] = useState<"playing" | "paused" | "done">(
     "playing"
   );
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [play, { stop }] = useSound(alarmSound);
 
   useEffect(() => {
     setTimeLeft(duration + 5);
     setStatus("playing");
-
-    // Create audio element
-    audioRef.current = new Audio("/alarm.mp3");
-
-    return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current = null;
-      }
-    };
   }, [duration]);
+
+  useEffect(() => {
+    return () => {
+      stop();
+    };
+  }, [stop]);
 
   useIntervalWhen(
     () => {
@@ -41,9 +39,7 @@ export function TimerModal({ open, onClose, duration }: TimerModalProps) {
         if (prev <= 1) {
           setStatus("done");
           // Play alarm sound
-          if (audioRef.current) {
-            audioRef.current.play();
-          }
+          play();
           return 0;
         }
         return prev - 1;
@@ -56,10 +52,8 @@ export function TimerModal({ open, onClose, duration }: TimerModalProps) {
     setStatus(status === "playing" ? "paused" : "playing");
   };
 
-  if (!open) return null;
-
   return (
-    <Dialog open={open} onOpenChange={(open) => !open && onClose()}>
+    <Dialog open onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="bg-black text-white border-gray-800 max-w-md sm:max-w-lg md:max-w-xl">
         <div className="flex flex-col items-center justify-center py-8">
           <div

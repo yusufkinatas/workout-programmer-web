@@ -1,25 +1,23 @@
-"use client"
+import { useState } from "react";
+import { Button } from "./components/ui/button";
+import { WorkoutRound } from "./components/workout-round";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { program } from "./lib/program";
 
-import { useState } from "react"
-import { WorkoutRound } from "@/components/workout-round"
-import { program } from "@/lib/program"
-import { Button } from "@/components/ui/button"
-import { ChevronLeft, ChevronRight } from "lucide-react"
-
-export default function Home() {
-  const [currentRoundIndex, setCurrentRoundIndex] = useState(0)
+function App() {
+  const [currentRoundIndex, setCurrentRoundIndex] = useState(0);
 
   const goToNextRound = () => {
     if (currentRoundIndex < program.length - 1) {
-      setCurrentRoundIndex(currentRoundIndex + 1)
+      setCurrentRoundIndex(currentRoundIndex + 1);
     }
-  }
+  };
 
   const goToPreviousRound = () => {
     if (currentRoundIndex > 0) {
-      setCurrentRoundIndex(currentRoundIndex - 1)
+      setCurrentRoundIndex(currentRoundIndex - 1);
     }
-  }
+  };
 
   return (
     <main className="flex min-h-screen flex-col items-center bg-black text-white p-4">
@@ -55,6 +53,7 @@ export default function Home() {
         </div>
       </div>
     </main>
-  )
+  );
 }
 
+export default App;

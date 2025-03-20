@@ -1,8 +1,8 @@
-import type { Round } from "@/lib/types"
-import { WorkoutExercise } from "@/components/workout-exercise"
+import { Round } from "../lib/types";
+import { WorkoutExercise } from "./workout-exercise";
 
 interface WorkoutRoundProps {
-  round: Round
+  round: Round;
 }
 
 export function WorkoutRound({ round }: WorkoutRoundProps) {
@@ -15,6 +15,5 @@ export function WorkoutRound({ round }: WorkoutRoundProps) {
         ))}
       </div>
     </div>
-  )
+  );
 }
-

@@ -1,4 +1,4 @@
-import type { Program } from "./types"
+import type { Program } from "./types";
 
 export const program: Program = [
   {
@@ -6,7 +6,7 @@ export const program: Program = [
     exercises: [
       { name: "Light Run", amount: "9 laps" },
       { name: "Dynamic Run", amount: "6 laps" },
-      { name: "Jump Rope", amount: 60 },
+      { name: "Jump Rope", amount: 0 },
     ],
   },
   {
@@ -28,7 +28,7 @@ export const program: Program = [
       { name: "Push-ups", amount: "6" },
       { name: "Push-ups", amount: "9" },
       { name: "Leg Raises", amount: "36" },
-      { name: "Stretching", amount: "3 secs" },
+      { name: "Stretching", amount: "3s" },
     ],
   },
   {
@@ -43,7 +43,7 @@ export const program: Program = [
       { name: "Push-ups", amount: "6" },
       { name: "Plank", amount: 30 },
       { name: "Commando", amount: "9" },
-      { name: "Stretching", amount: "6 secs" },
+      { name: "Stretching", amount: "6s" },
     ],
   },
   {
@@ -59,7 +59,7 @@ export const program: Program = [
       { name: "Wall Squat", amount: 45 },
       { name: "Plank", amount: 45 },
       { name: "Push-ups", amount: "9" },
-      { name: "Stretching", amount: "9 secs" },
+      { name: "Stretching", amount: "9s" },
     ],
   },
   {
@@ -79,8 +79,7 @@ export const program: Program = [
       { name: "Jumps", amount: "64" },
       { name: "Wall Squat", amount: 30 },
       { name: "Wall Squat", amount: 30 },
-      { name: "Stretching", amount: "12 secs" },
+      { name: "Stretching", amount: "12s" },
     ],
   },
-]
-
+];
