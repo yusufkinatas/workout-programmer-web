@@ -54,29 +54,28 @@ export function TimerModal({ onClose, duration }: TimerModalProps) {
 
   return (
     <Dialog open onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="bg-black text-white border-gray-800 max-w-md sm:max-w-lg md:max-w-xl">
-        <div className="flex flex-col items-center justify-center py-8">
+      <DialogContent className="bg-black text-white border-gray-800 max-w-md sm:max-w-lg md:max-w-xl h-screen flex flex-col">
+        <div className="flex flex-col items-center justify-center flex-1 py-8">
           <div
-            className="text-8xl font-bold mb-8 tabular-nums"
+            className="text-9xl font-bold mb-8 tabular-nums"
             style={{ color: status === "done" ? "#FEA00A" : "white" }}
           >
             {formatTime(timeLeft)}
           </div>
 
-          {status !== "done" && (
-            <Button
-              variant="outline"
-              size="lg"
-              className="w-24 h-24 rounded-full bg-gray-800 hover:bg-gray-700"
-              onClick={togglePlayPause}
-            >
-              {status === "playing" ? <Pause size={36} /> : <Play size={36} />}
-            </Button>
-          )}
+          <button
+            className="w-40 h-40 flex items-center justify-center rounded-full bg-gray-800 hover:bg-gray-700"
+            onClick={togglePlayPause}
+            disabled={status === "done"}
+            style={{
+              opacity: status === "done" ? 0 : 1,
+            }}
+          >
+            {status === "playing" ? <Pause size={64} /> : <Play size={64} />}
+          </button>
 
           <Button
-            variant="ghost"
-            className="mt-8 w-full py-6 text-xl font-bold bg-gray-800 hover:bg-gray-700"
+            className="mt-20 h-24 w-full py-6 text-4xl font-bold bg-gray-800 hover:bg-gray-700"
             onClick={onClose}
           >
             CLOSE

@@ -1,21 +1,43 @@
-import { useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Button } from "./components/ui/button";
 import { WorkoutRound } from "./components/workout-round";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { program } from "./lib/program";
 
 function App() {
   const [currentRoundIndex, setCurrentRoundIndex] = useState(0);
+  const [wakeLock, setWakeLock] = useState<WakeLockSentinel | null>(null);
+
+  useEffect(() => {
+    const requestWakeLock = async () => {
+      try {
+        const lock = await navigator.wakeLock?.request("screen");
+        setWakeLock(lock);
+      } catch (err) {
+        console.log("Wake Lock error:", err);
+      }
+    };
+
+    requestWakeLock();
+
+    return () => {
+      if (wakeLock) {
+        wakeLock.release();
+      }
+    };
+  }, []);
 
   const goToNextRound = () => {
     if (currentRoundIndex < program.length - 1) {
       setCurrentRoundIndex(currentRoundIndex + 1);
+      window.scrollTo(0, 0);
     }
   };
 
   const goToPreviousRound = () => {
     if (currentRoundIndex > 0) {
       setCurrentRoundIndex(currentRoundIndex - 1);
+      window.scrollTo(0, 0);
     }
   };
 

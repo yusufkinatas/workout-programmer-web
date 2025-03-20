@@ -39,6 +39,7 @@ export function WorkoutExercise({ exercise }: WorkoutExerciseProps) {
             variant="ghost"
             className="h-full bg-gray-800 rounded-none hover:bg-gray-700"
             onClick={() => setTimerOpen(true)}
+            style={{ height: 76 }}
           >
             <Play size={24} />
           </Button>
