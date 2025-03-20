@@ -6,7 +6,7 @@ export const program: Program = [
     exercises: [
       { name: "Light Run", amount: "9 laps" },
       { name: "Dynamic Run", amount: "6 laps" },
-      { name: "Jump Rope", amount: 0 },
+      { name: "Jump Rope", amount: 60 },
     ],
   },
   {
